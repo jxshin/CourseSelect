@@ -16,6 +16,7 @@
             <%= label_tag(:l_course_type, "课程属性", style:'margin: 0px 0px 0px 30px') %>
             <% types=Array.new %>
             <% Course.all.each{|c| types.push([c.course_type,c.course_type]) } %>
+            <% types = types.uniq %>
             <%= select_tag(:course_type, options_for_select([['不限','不限']]+types, 1)) %>
             <%= label_tag(:l_course_name, "课程名称", style:'margin: 0px 0px 0px 30px') %>
             <%= text_field_tag(:course_name, "" ) %>

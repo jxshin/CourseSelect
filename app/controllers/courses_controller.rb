@@ -85,6 +85,10 @@ class CoursesController < ApplicationController
     end
   end  
 
+def hint
+  @courses = Course.where("open = ?", true)
+end
+
   def select
     @course=Course.find_by_id(params[:id])
     current_user.courses<<@course
