@@ -25,11 +25,12 @@
             </thead>
             <tbody>
               <tr>
+                <% requirement = {"公共选修课" => 10.0, "一级学科普及课" => 5.0, "一级学科核心课" => 15.0, "专业研讨课" => 10.0, "专业普及课" => 5.0, "专业核心课" => 10.0} %>
                 <td>要求学分</td>
                 <% types.each do |type| %>
-                  <td> </td>
+                  <td> <%= requirement[type] %> </td>
                 <% end %>
-                <td> </td>
+                <td> 55.0 </td>
               <tr>
               <tr>
                 <td>已选学分</td>
