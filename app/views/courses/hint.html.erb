@@ -34,33 +34,35 @@
               <tr>
               <tr>
                 <td>已选学分</td>
-                <% total_selected_grade = 0 %>
+                <% total_selected_credit = 0 %>
                 <% types.each do |type| %>
-                  <% selected_grade = 0 %>
+                  <% selected_credit = 0 %>
                   <% @courses.each do |course| %>
                     <% if course.course_type == type %>
-                      <% selected_grade += course.credit.split("/")[1].to_f %>
+                      <% selected_credit += course.credit.split("/")[1].to_f %>
                     <% end %>
                   <% end %>
-                  <td> <%= selected_grade %> </td>
-                  <% total_selected_grade += selected_grade %>
+                  <td> <%= selected_credit %> </td>
+                  <% total_selected_credit += selected_credit %>
                 <% end %>
-                <td> <%= total_selected_grade %> </td>
+                <td> <%= total_selected_credit %> </td>
               <tr>
               <tr>
                 <td>获得学分</td>
-                <% total_grade = 0 %>
+                <% counted_courses = [] %>
+                <% total_obtained_credit = 0 %>
                 <% types.each do |type| %>
-                  <% grade = 0 %>
+                  <% obtained_credit = 0 %>
                   <% current_user.grades.each do |g| %>
-                    <% if g.course.course_type == type && g.grade != nil %>
-                      <% grade += g.grade %>
+                    <% if (not counted_courses.include?g.course.id) && g.course.course_type == type && g.grade != nil && g.grade>=60 %>
+                      <% obtained_credit += g.course.credit.split("/")[1].to_f  %>
+                      <% counted_courses << g.course.id %>
                     <% end %>
                   <% end %>
-                  <td> <%= grade %> </td>
-                  <% total_grade += grade %>
+                  <td> <%= obtained_credit %> </td>
+                  <% total_obtained_credit += obtained_credit %>
                 <% end %>
-                <td> <%= total_grade %> </td>
+                <td> <%= total_obtained_credit %> </td>
               <tr>
             </tbody>
           </table>

@@ -62,11 +62,23 @@ class CoursesController < ApplicationController
     current_user.courses.each do |course|
       excluded_courses_id << course.id
     end
-    @courses = Course.where("open = ? and id not in (?)", true, excluded_courses_id).paginate(page: params[:page], per_page: 4)
+    @courses = Course.where("open = true and id not in (?)", excluded_courses_id).paginate(page: params[:page], per_page: 4)
     if params.has_key?(:course_time)
       ctime = params[:course_time]
       ctype = params[:course_type]
-      cname = params[:course_name] 
+      cname = params[:course_name]
+      conditions = "open = true and id not in (?)"
+      if ctime != "不限"
+        conditions += " and course_time like '%#{ctime}%'"
+      end
+      if ctype != "不限"
+        conditions += " and course_type = '#{ctype}'"
+      end
+      if cname != ""
+        conditions += " and name like '%#{cname}%'"
+      end
+      @courses = Course.where(conditions, excluded_courses_id).paginate(page: params[:page], per_page: 4)
+=begin
       if ctime != "不限" and ctype == "不限" and cname == ""
         @courses = Course.where("open = ? and course_time like ? and id not in (?)", true, "%#{ctime}%", excluded_courses_id).paginate(page: params[:page], per_page: 4)
       elsif ctime == "不限" and ctype != "不限" and cname == ""
@@ -81,12 +93,14 @@ class CoursesController < ApplicationController
         @courses = Course.where("open = ? and course_type = ? and name like ? and id not in (?)", true, ctype, "%#{cname}%", excluded_courses_id).paginate(page: params[:page], per_page: 4)
       elsif ctime != "不限" and ctype != "不限" and cname != ""
         @courses = Course.where("open = ? and  course_time like ? and course_type = ? and name like ? and id not in (?)", true, "%#{ctime}%", ctype, "%#{cname}%", excluded_courses_id).paginate(page: params[:page], per_page: 4)
-      end  
+      end
+=end
+
     end
   end  
 
   def hint
-    @courses = Course.where("open = ?", true)
+    @courses = current_user.courses
   end
 
   def table

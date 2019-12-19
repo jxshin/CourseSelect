@@ -4,6 +4,8 @@ default: &default
   pool: 5
   username: coding
   password: coding
+  username: coding
+  password: coding
 
 
 development:
